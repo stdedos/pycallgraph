@@ -1,0 +1,12 @@
+name: pycallgraph
+
+channels:
+  - conda-forge
+  - default
+
+dependencies:
+  - python=3.7
+  - graphviz=2.38
+  - requests=2.25.1
+  - pre-commit=2.9.3
+  - pip=20.3.3
