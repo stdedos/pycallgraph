@@ -1,19 +1,16 @@
-#!/usr/bin/env python
-'''
+"""
 This example demonstrates a simple use of pycallgraph.
-'''
+"""
 from pycallgraph import PyCallGraph
 from pycallgraph.output import GraphvizOutput
 
 
 class Banana:
-
     def eat(self):
         pass
 
 
 class Person:
-
     def __init__(self):
         self.no_bananas()
 
@@ -30,7 +27,7 @@ class Person:
 
 def main():
     graphviz = GraphvizOutput()
-    graphviz.output_file = 'basic.png'
+    graphviz.output_file = "basic.png"
 
     with PyCallGraph(output=graphviz):
         person = Person()
@@ -39,5 +36,5 @@ def main():
         person.eat_bananas()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
