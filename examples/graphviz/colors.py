@@ -56,7 +56,7 @@ def main():
     )
 
     pycallgraph.start()
-    import HTMLParser  # noqa
+    from html.parser import HTMLParser  # noqa
     pycallgraph.stop()
 
     # Set the edge colour to black for all examples
