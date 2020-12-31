@@ -1,16 +1,14 @@
-try:
-    import cPickle as pickle
-except ImportError:
-    import pickle
+import pickle
+from abc import ABC
 
 from .output import Output
 
 
-class PickleOutput(Output):
-
+class PickleOutput(Output, ABC):
     def __init__(self, **kwargs):
         self.fp = None
-        self.output_file = 'pycallgraph.dot'
+        self.tracer = None
+        self.output_file = "pycallgraph.dot"
         Output.__init__(self, **kwargs)
 
     @classmethod
@@ -18,14 +16,18 @@ class PickleOutput(Output):
         defaults = cls()
 
         subparser = subparsers.add_parser(
-            'pickle',
-            help='Dump to a cPickle file for generation later',
-            parents=[parent_parser], usage=usage,
+            "pickle",
+            help="Dump to a cPickle file for generation later",
+            parents=[parent_parser],
+            usage=usage,
         )
 
         subparser.add_argument(
-            '-o', '--output-file', type=str, default=defaults.output_file,
-            help='The generated cPickle file',
+            "-o",
+            "--output-file",
+            type=str,
+            default=defaults.output_file,
+            help="The generated cPickle file",
         )
 
         return subparser
