@@ -1,13 +1,13 @@
-import re
 import os
+import re
 from distutils.spawn import find_executable
 
-from ..exceptions import PyCallGraphException
 from ..color import Color
+from ..exceptions import PyCallGraphException
 
 
 class Output(object):
-    '''Base class for all outputters.'''
+    """Base class for all outputters."""
 
     def __init__(self, **kwargs):
         self.node_color_func = self.node_color
@@ -19,46 +19,48 @@ class Output(object):
         [setattr(self, k, v) for k, v in kwargs.items()]
 
     def set_config(self, config):
-        '''
+        """
         This is a quick hack to move the config variables set in Config into
         the output module config variables.
-        '''
+        """
         for k, v in config.__dict__.items():
-            if hasattr(self, k) and \
-                    callable(getattr(self, k)):
+            if hasattr(self, k) and callable(getattr(self, k)):
                 continue
             setattr(self, k, v)
 
-    def node_color(self, node):
+    @staticmethod
+    def node_color(node):
         value = float(node.time.fraction * 2 + node.calls.fraction) / 3
-        return Color.hsv(value / 2 + .5, value, 0.9)
+        return Color.hsv(value / 2 + 0.5, value, 0.9)
 
-    def edge_color(self, edge):
+    @staticmethod
+    def edge_color(edge):
         value = float(edge.time.fraction * 2 + edge.calls.fraction) / 3
-        return Color.hsv(value / 2 + .5, value, 0.7)
+        return Color.hsv(value / 2 + 0.5, value, 0.7)
 
     def node_label(self, node):
         parts = [
-            '{0.name}',
-            'calls: {0.calls.value:n}',
-            'time: {0.time.value:f}s',
+            "{0.name}",
+            "calls: {0.calls.value:n}",
+            "time: {0.time.value:f}s",
         ]
 
         if self.processor.config.memory:
             parts += [
-                'memory in: {0.memory_in.value_human_bibyte}',
-                'memory out: {0.memory_out.value_human_bibyte}',
+                "memory in: {0.memory_in.value_human_bibyte}",
+                "memory out: {0.memory_out.value_human_bibyte}",
             ]
 
-        return r'\n'.join(parts).format(node)
+        return r"\n".join(parts).format(node)
 
-    def edge_label(self, edge):
-        return '{0}'.format(edge.calls.value)
+    @staticmethod
+    def edge_label(edge):
+        return edge.calls.value
 
     def sanity_check(self):
-        '''Basic checks for certain libraries or external applications.  Raise
+        """Basic checks for certain libraries or external applications.  Raise
         or warn if there is a problem.
-        '''
+        """
         pass
 
     @classmethod
@@ -72,32 +74,33 @@ class Output(object):
         self.processor = processor
 
     def start(self):
-        '''Initialise variables after initial configuration.'''
+        """Initialise variables after initial configuration."""
         pass
 
     def update(self):
-        '''Called periodically during a trace, but only when should_update is
+        """Called periodically during a trace, but only when should_update is
         set to True.
-        '''
-        raise NotImplementedError('update')
+        """
+        raise NotImplementedError("update")
 
     def should_update(self):
-        '''Return True if the update method should be called periodically.'''
+        """Return True if the update method should be called periodically."""
         return False
 
     def done(self):
-        '''Called when the trace is complete and ready to be saved.'''
-        raise NotImplementedError('done')
+        """Called when the trace is complete and ready to be saved."""
+        raise NotImplementedError("done")
 
     def ensure_binary(self, cmd):
         if find_executable(cmd):
             return
 
         raise PyCallGraphException(
-            'The command "{0}" is required to be in your path.'.format(cmd))
+            f'The command "{cmd}" is required to be in your path.'
+        )
 
     def normalize_path(self, path):
-        regex_user_expand = re.compile('\A~')
+        regex_user_expand = re.compile("\A~")
         if regex_user_expand.match(path):
             path = os.path.expanduser(path)
         else:
@@ -107,7 +110,7 @@ class Output(object):
     def prepare_output_file(self):
         if self.fp is None:
             self.output_file = self.normalize_path(self.output_file)
-            self.fp = open(self.output_file, 'wb')
+            self.fp = open(self.output_file, "wb")
 
     def verbose(self, text):
         self.processor.config.log_verbose(text)
@@ -118,6 +121,9 @@ class Output(object):
     @classmethod
     def add_output_file(cls, subparser, defaults, help):
         subparser.add_argument(
-            '-o', '--output-file', type=str, default=defaults.output_file,
+            "-o",
+            "--output-file",
+            type=str,
+            default=defaults.output_file,
             help=help,
         )
