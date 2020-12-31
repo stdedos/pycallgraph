@@ -9,4 +9,5 @@ dependencies:
   - graphviz=2.38
   - requests=2.25.1
   - pre-commit=2.9.3
+  - pytest=6.2.1
   - pip=20.3.3
