@@ -1,37 +1,39 @@
-language:
- - python
+language: python
+python: 3.7
 
-python:
-  - "2.7"
-  - "3.3"
-  - "3.4"
-  - "pypy"
-# pytest does not support python 3.5
-# https://bitbucket.org/pytest-dev/pytest/pull-request/296/astcall-signature-changed-on-35
-# - "nightly"
-
-matrix:
-  allow_failures:
-    - python:
-       - "pypy"
-    - python:
-       - "nigthly"
-
-env:
-  global:
-    # COVERALLS_REPO_TOKEN
-    - secure: "g94JYpTRakg5qLo8g2Q0kDX5HHPL/IfNEuYIeV29x5SHnISbwmRntudLSqRb0E2zxoKMyqo9l8UtcGd08TkV7hyanywtQygFIG9Cp2EE11Uq5CGZ7cr0G5HikRIJAQb9fFDDzGhrMUJIGuRPEJ81A9H2I2ZhNq54w3FuRi2FOO4="
+addons:
+  sonarcloud:
+    organization: e-alizadeh
+    token:
+      # travis encrypt <SonarCloud Token>
+      secure: "m6AH9YodmijePSx37K8X4cTB+Loc3/+kociByf51dnm5VXWsuYyA/jJy3gwiUIQI9As7u8p/QigaYvu3IxnfozNASEfUDh13OJXFM7DFNC2lMT3hLZgZmMnEEUN9dXYLV1k9biaq8mi7BUgMiYT0U6cWvpImYM7ghntHcJ/ag95eaG027mbzbWEK3dhpOhxWQGksEk3I2Ghez45bNQgi+H7+3iGGuOE+5qM+6ct4H90y1bMB72HzFZ0giYnpxXVdoYMoV6yGfssFNZ7W73YpKwxKtW3XaJr0RTSJbqCVJR7H8Xqt/ez3ltjpCM6w+S5KeT8oV8UvKg9JhR4n111uYgIkIwtDhvc58LQpJSvafm4x2qG1TWcAf+3hVytLYxWNTeNPEw1D7EMq+Fwxq45bSMkze7cfziYtENnHD4qNLNQuumMIhQ+lPc+q3cq7+rVOrcZQFL9ue9NAnBssK7wrsxsHYQWvTgv1UXQ6H04m3YZGW/PBBCMsR+vIzOsA18uxvfjxmAUNVESTFgdy1JIX+rA+AlVWNjpk/vtPQQPUqhqr4TP/wzRWpCCO/jLoSKxiuNbKl/jWcA3rG0AUTDA0amfpOco8Z8efwI+Noc3RgeCP5E4y8M3kmzZlz9e2LxmmJ+ZVjECBEoWu4qSL8WPhrV1G9AXjUUe+EN9z7r5i7T0="
 
 before_install:
- - sudo apt-get update -qq
- - sudo apt-get install -qq graphviz
+  - echo "before_install"
+  - sudo apt-get update -qq
+  - sudo apt-get install -qq graphviz
 
 install:
- - "pip install -r requirements/development.txt"
- - "if [[ $TRAVIS_PYTHON_VERSION == '3.3' ]] || [[ $TRAVIS_PYTHON_VERSION == '3.4' ]] || [[ $TRAVIS_PYTHON_VERSION == 'nightly' ]]; then make 2to3; fi"
+  - echo "install start"
+  - if [[ "$TRAVIS_PYTHON_VERSION" == "2.7" ]]; then
+      wget https://repo.continuum.io/miniconda/Miniconda2-latest-Linux-x86_64.sh -O miniconda.sh;
+    else
+      wget https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+    fi
+  - bash miniconda.sh -b -p $HOME/miniconda
+  - export PATH="$HOME/miniconda/bin:$PATH"
+  - hash -r
+  - conda config --set always_yes yes --set changeps1 no
+  - conda update -q conda
+
+  # Useful for debugging any issues with conda
+  - conda info -a
+
+  # Prepare the conda environment
+  - conda env create -f environment.yaml
+  - conda activate pycallgraph
+  - python setup.py install
 
 script:
- - make tests
-
-after_success:
- - coveralls
+  - pytest # run tests
+  - sonar-scanner # submit coverage
