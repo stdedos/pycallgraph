@@ -1,5 +1,6 @@
 import os
 import re
+from abc import abstractmethod
 from distutils.spawn import find_executable
 
 from ..color import Color
@@ -10,6 +11,9 @@ class Output(object):
     """Base class for all outputters."""
 
     def __init__(self, **kwargs):
+        self.processor = None
+        self.output_file = None
+        self.fp = None
         self.node_color_func = self.node_color
         self.edge_color_func = self.edge_color
         self.node_label_func = self.node_label
@@ -63,8 +67,8 @@ class Output(object):
         """
         pass
 
-    @classmethod
-    def add_arguments(cls, subparsers):
+    @abstractmethod
+    def add_arguments(self, subparsers, parent_parser, usage):
         pass
 
     def reset(self):
@@ -91,7 +95,8 @@ class Output(object):
         """Called when the trace is complete and ready to be saved."""
         raise NotImplementedError("done")
 
-    def ensure_binary(self, cmd):
+    @staticmethod
+    def ensure_binary(cmd):
         if find_executable(cmd):
             return
 
@@ -99,8 +104,9 @@ class Output(object):
             f'The command "{cmd}" is required to be in your path.'
         )
 
-    def normalize_path(self, path):
-        regex_user_expand = re.compile("\A~")
+    @staticmethod
+    def normalize_path(path):
+        regex_user_expand = re.compile("\A~")  # noqa
         if regex_user_expand.match(path):
             path = os.path.expanduser(path)
         else:
@@ -119,11 +125,11 @@ class Output(object):
         self.processor.config.log_debug(text)
 
     @classmethod
-    def add_output_file(cls, subparser, defaults, help):
+    def add_output_file(cls, subparser, defaults, help_msg):
         subparser.add_argument(
             "-o",
             "--output-file",
             type=str,
             default=defaults.output_file,
-            help=help,
+            help=help_msg,
         )
