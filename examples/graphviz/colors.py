@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 This example demonstrates several different methods on colouring your graph.
 

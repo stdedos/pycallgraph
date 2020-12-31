@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 This example shows the interals of certain Python modules when they are being
 imported.

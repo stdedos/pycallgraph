@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 This example demonstrates the internal workings of a regular expression lookup.
 """

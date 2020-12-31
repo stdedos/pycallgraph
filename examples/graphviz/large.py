@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 This example is trying to make a large graph. You'll need some internet access
 for this to work.

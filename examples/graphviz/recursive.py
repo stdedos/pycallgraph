@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """
 This example demonstrates a simple recursive call.
 """
