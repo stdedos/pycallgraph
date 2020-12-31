@@ -1,9 +1,12 @@
 import re
 import sys
 
-from helpers import *
-import calls
+import pytest
+
+from pycallgraph import Config
 from pycallgraph.tracer import TraceProcessor
+
+from . import calls
 
 
 @pytest.fixture
@@ -19,15 +22,12 @@ def test_empty(trace_processor):
 
 
 def test_nop(trace_processor):
+
     sys.settrace(trace_processor.process)
     calls.nop()
     sys.settrace(None)
-
-    assert trace_processor.call_dict == {
-        '__main__': {
-            'calls.nop': 1
-        }
-    }
+    print(trace_processor.call_dict)
+    assert trace_processor.call_dict == {"__main__": {"calls.nop": 1}}
 
 
 def test_one_nop(trace_processor):
@@ -36,8 +36,8 @@ def test_one_nop(trace_processor):
     sys.settrace(None)
 
     assert trace_processor.call_dict == {
-        '__main__': {'calls.one_nop': 1},
-        'calls.one_nop': {'calls.nop': 1},
+        "__main__": {"calls.one_nop": 1},
+        "calls.one_nop": {"calls.nop": 1},
     }
 
 
@@ -51,8 +51,8 @@ def stdlib_trace(trace_processor, include_stdlib):
 
 
 def test_no_stdlib(trace_processor):
-    assert 're.match' not in stdlib_trace(trace_processor, False)
+    assert "re.match" not in stdlib_trace(trace_processor, False)
 
 
 def test_yes_stdlib(trace_processor):
-    assert 're.match' in stdlib_trace(trace_processor, True)
+    assert "re.match" in stdlib_trace(trace_processor, True)

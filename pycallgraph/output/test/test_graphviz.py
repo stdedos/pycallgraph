@@ -1,12 +1,18 @@
-from helpers import *
-from calls import *
+import os
+
+import pytest
+
+from pycallgraph import PyCallGraph
+from pycallgraph.output import GraphvizOutput
+
+from ..calls import one_nop
 
 
 @pytest.fixture
 def graphviz(temp):
     g = GraphvizOutput()
     g.output_file = temp
-    g.output_type = 'dot'
+    g.output_type = "dot"
     return g
 
 
@@ -16,5 +22,5 @@ def test_simple(graphviz):
     dot = open(graphviz.output_file).read()
     os.unlink(graphviz.output_file)
 
-    assert 'digraph G' in dot
+    assert "digraph G" in dot
     assert '__main__ -> "calls.one_nop"' in dot
