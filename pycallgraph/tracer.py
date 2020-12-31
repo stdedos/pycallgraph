@@ -12,7 +12,7 @@ from memory_profiler import memory_usage
 from .util import Util
 
 
-class SyncronousTracer(object):
+class SynchronousTracer(object):
     def __init__(self, outputs, config):
         self.processor = TraceProcessor(outputs, config)
         self.config = config
@@ -40,10 +40,10 @@ class SyncronousTracer(object):
         pass
 
 
-class AsyncronousTracer(SyncronousTracer):
+class AsynchronousTracer(SynchronousTracer):
     def start(self):
         self.processor.start()
-        SyncronousTracer.start(self)
+        SynchronousTracer.start(self)
 
     def tracer(self, frame, event, arg):
         self.processor.queue(frame, event, arg, self.memory())
