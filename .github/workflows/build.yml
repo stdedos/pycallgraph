@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - develop
       - upgrade-library
   pull_request:
       types: [opened, synchronize, reopened]
@@ -26,9 +27,12 @@ jobs:
       - run: |
           conda info
           conda list
-      - run: |
-          python setup.py install
-          pytest
+
+      - name: 🐍 Python Setup
+        run: python setup.py install
+
+      - name: Run pytest
+        run: pytest
 
   sonarcloud:
     name: ☁ SonarCloud
