@@ -10,6 +10,26 @@ on:
 
 name: Main Workflow
 jobs:
+  run_tests:
+    name: Create Conda Environment & Run pytest
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -l {0}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: pycallgraph
+          environment-file: environment.yaml
+          auto-activate-base: false
+      - run: |
+          conda info
+          conda list
+      - run: |
+        python setup.py install
+        pytest
+
   sonarcloud:
     name: ☁ SonarCloud
     runs-on: ubuntu-latest
