@@ -111,11 +111,9 @@ class GraphvizOutput(Output):
         with os.fdopen(fd, "w") as f:
             f.write(source)
 
-        cmd = '"{0}" -T{1} -o{2} {3}'.format(
-            self.tool, self.output_type, self.output_file, temp_name
-        )
+        cmd = f'"{self.tool}" -T{self.output_type} -o{self.output_file} {temp_name}'
 
-        self.verbose("Executing: {0}".format(cmd))
+        self.verbose(f"Executing: {cmd}")
         try:
             proc = sub.Popen(cmd, stdout=sub.PIPE, stderr=sub.PIPE, shell=True)
             ret, output = proc.communicate()
@@ -128,10 +126,7 @@ class GraphvizOutput(Output):
             os.unlink(temp_name)
 
         self.verbose(
-            "Generated {0} with {1} nodes.".format(
-                self.output_file,
-                len(self.processor.func_count),
-            )
+            f"Generated {self.output_file} with {len(self.processor.func_count)} nodes."
         )
 
     def generate(self):
@@ -141,41 +136,34 @@ class GraphvizOutput(Output):
         indent_join = "\n" + " " * 12
 
         return textwrap.dedent(
-            """\
+            f"""\
         digraph G {{
 
             // Attributes
-            {0}
+            {indent_join.join(self.generate_attributes())}
 
             // Groups
-            {1}
+            {indent_join.join(self.generate_groups())}
 
             // Nodes
-            {2}
+            {indent_join.join(self.generate_nodes())}
 
             // Edges
-            {3}
+            {indent_join.join(self.generate_edges())}
 
         }}
-        """.format(
-                indent_join.join(self.generate_attributes()),
-                indent_join.join(self.generate_groups()),
-                indent_join.join(self.generate_nodes()),
-                indent_join.join(self.generate_edges()),
-            )
+        """
         )
 
-    def attrs_from_dict(self, d):
+    @staticmethod
+    def attrs_from_dict(d):
         output = []
         for attr, val in d.items():
-            output.append('%s = "%s"' % (attr, val))
+            output.append(f'{attr} = "{val}"')
         return ", ".join(output)
 
     def node(self, key, attr):
-        return '"{0}" [{1}];'.format(
-            key,
-            self.attrs_from_dict(attr),
-        )
+        return f'"{key}" [{self.attrs_from_dict(attr)}];'
 
     def edge(self, edge, attr):
         return '"{0.src_func}" -> "{0.dst_func}" [{1}];'.format(
@@ -186,12 +174,7 @@ class GraphvizOutput(Output):
     def generate_attributes(self):
         output = []
         for section, attrs in self.graph_attributes.items():
-            output.append(
-                "{0} [ {1} ];".format(
-                    section,
-                    self.attrs_from_dict(attrs),
-                )
-            )
+            output.append(f"{section} [ {self.attrs_from_dict(attrs)} ];")
         return output
 
     def generate_groups(self):
