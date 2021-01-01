@@ -6,6 +6,8 @@ on:
       - master
       - develop
       - upgrade-library
+    paths-ignore:
+      - 'README.*'
   pull_request:
       types: [opened, synchronize, reopened]
 
@@ -19,30 +21,22 @@ jobs:
         shell: bash -l {0}
     steps:
       - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0 # Disabling shallow clone is recommended for improving relevancy of reporting
       - uses: conda-incubator/setup-miniconda@v2
         with:
           activate-environment: pycallgraph
           environment-file: environment.yaml
           auto-activate-base: false
-      - run: |
-          conda info
-          conda list
 
       - name: 🐍 Python Setup
         run: python setup.py install
 
-      - name: Run pytest
+      - name: 🧐 Run pytest
         run: pytest
 
-  sonarcloud:
-    name: ☁ SonarCloud
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0 # Disabling shallow clone is recommended for improving relevancy of reporting
-    - name: SonarCloud Scan
-      uses: sonarsource/sonarcloud-github-action@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
-        SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      - name: ☁ SonarCloud Scan
+        uses: sonarsource/sonarcloud-github-action@master
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # Needed to get PR information, if any
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
