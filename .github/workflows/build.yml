@@ -27,8 +27,8 @@ jobs:
           conda info
           conda list
       - run: |
-        python setup.py install
-        pytest
+          python setup.py install
+          pytest
 
   sonarcloud:
     name: ☁ SonarCloud
