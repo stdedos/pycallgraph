@@ -22,22 +22,20 @@ def test_empty(trace_processor):
 
 
 def test_nop(trace_processor):
-
     sys.settrace(trace_processor.process)
     calls.nop()
     sys.settrace(None)
-    print(trace_processor.call_dict)
-    assert trace_processor.call_dict == {"__main__": {"calls.nop": 1}}
+
+    assert trace_processor.call_dict == {"__main__": {"pycallgraph.test.calls.nop": 1}}
 
 
 def test_one_nop(trace_processor):
     sys.settrace(trace_processor.process)
     calls.one_nop()
     sys.settrace(None)
-
     assert trace_processor.call_dict == {
-        "__main__": {"calls.one_nop": 1},
-        "calls.one_nop": {"calls.nop": 1},
+        "__main__": {"pycallgraph.test.calls.one_nop": 1},
+        "pycallgraph.test.calls.one_nop": {"pycallgraph.test.calls.nop": 1},
     }
 
 
