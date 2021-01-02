@@ -37,7 +37,7 @@ jobs:
         run: python setup.py install
 
       - name: 🧐 Run pytest
-        run: pytest
+        run: pytest --cov-report xml:coverage.xml
 
       - name: ☁ SonarCloud Scan
         uses: sonarsource/sonarcloud-github-action@master
