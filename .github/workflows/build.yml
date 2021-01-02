@@ -21,8 +21,8 @@ jobs:
         shell: bash -l {0}
     steps:
       - uses: actions/checkout@v2
-#        with:
-#          fetch-depth: 0 # Disabling shallow clone is recommended for improving relevancy of reporting
+        with:
+          fetch-depth: 0 # Disabling shallow clone is recommended for improving relevancy of reporting
       - uses: conda-incubator/setup-miniconda@v2
         with:
           activate-environment: pycallgraph
