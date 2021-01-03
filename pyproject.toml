@@ -15,7 +15,6 @@ graphviz="^0.16"
 memory_profiler="^0.58.0"
 psutil="^5.8.0"
 requests = "^2.25.1"
-sphinx = "^3.4.1"
 
 
 [tool.poetry.dev-dependencies]
@@ -23,6 +22,7 @@ pytest = "^6.2.1"
 pytest-cov = "^2.10.1"
 ipdb = "^0.13.4"
 pre-commit = "^2.9.3"
+sphinx = "^3.4.1"
 
 
 [build-system]
