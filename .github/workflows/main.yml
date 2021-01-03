@@ -33,6 +33,9 @@ jobs:
           environment-file: dev-env.yaml
           auto-activate-base: false
 
+      - name: ⚙📊 Install graphviz
+        uses: apt install graphviz
+
       - name: 🐍 Setup Poetry
         run: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
 
