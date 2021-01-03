@@ -14,7 +14,7 @@ on:
 name: Main Workflow
 jobs:
   run_tests:
-    name: Create Conda Env & Run pytest
+    name: Setup environment & Run pytest
     runs-on: ubuntu-latest
     defaults:
       run:
