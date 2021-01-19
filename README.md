@@ -1,7 +1,15 @@
 NOTE
 ---
 This is a maintained fork of the excellent [PyCallGraph](https://github.com/gak/pycallgraph) project.
-The latest version is **1.0.1**, and was released on 2013-09-17.
+The latest version is **1.0.1**, and was released on 2013-09-17. 
+The next release starts from **2.0.0** due to deprecating Python 2.  
+
+Quick Start
+-----------
+Installation is easy as:
+
+    pip install callgraph4py
+
 
 Python Call Graph
 -----------------
@@ -28,9 +36,4 @@ Features
 -   Modules can be visually grouped together.
 -   Easily extendable to create your own output formats.
 
-Quick Start
------------
-Installation is easy as:
-
-    pip install pycallgraph
 
