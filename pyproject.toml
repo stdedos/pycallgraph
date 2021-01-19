@@ -6,7 +6,7 @@ authors = ["Essi Alizadeh <pycallgraph@ealizadeh.com>"]
 readme = "README.md"
 
 packages = [
-    { include = "callgraph4py" }
+    { include = "pycallgraph" }
 ]
 exclude = ["*/tests"]
 
