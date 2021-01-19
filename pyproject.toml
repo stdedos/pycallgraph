@@ -1,8 +1,19 @@
 [tool.poetry]
-name = "pycallgraph"
-version = "1.0.1"
-description = ""
+name = "callgraph4py"
+version = "2.0.0"
+description = "Create a Call Graph"
 authors = ["Essi Alizadeh <pycallgraph@ealizadeh.com>"]
+readme = "README.md"
+
+packages = [
+    { include = "callgraph4py" }
+]
+exclude = ["*/tests"]
+
+classifiers = [
+    "Topic :: Software Development :: Build Tools",
+    "Topic :: Software Development :: Libraries :: Python Modules"
+]
 
 [[tool.poetry.source]]
 name = 'default'
