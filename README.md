@@ -1,3 +1,13 @@
+# CallGraph4Py
+
+![](https://img.shields.io/badge/Project%20Status-Under%20Development-green)
+
+[![PyPI version](https://badge.fury.io/py/callgraph4py.svg)](https://badge.fury.io/py/callgraph4py)
+![Main Workflow](https://github.com/e-alizadeh/pycallgraph/workflows/Main%20Workflow/badge.svg)
+![MIT License](https://img.shields.io/badge/License-MIT-blueviolet)
+[![Code Style: Black](https://img.shields.io/badge/Code%20style-black-black)](https://github.com/psf/black)
+
+
 NOTE
 ---
 This is a maintained fork of the excellent [PyCallGraph](https://github.com/gak/pycallgraph) project.

@@ -1,3 +1,5 @@
+name: Build and Test
+
 on:
   # Trigger analysis when pushing in master or pull requests, and when creating
   # a pull request.
@@ -6,15 +8,15 @@ on:
       - master
       - develop
     paths-ignore:
-      - 'README.*'
+      - '**.md'
   pull_request:
       types: [opened, synchronize, reopened]
 
-name: Main Workflow
 jobs:
   run_tests:
     name: Setup environment & Run pytest
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, '[skip ci]')" # Skip CI if [skip ci] is passed in the commit.
     defaults:
       run:
         shell: bash -l {0}
