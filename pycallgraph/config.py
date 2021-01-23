@@ -3,6 +3,7 @@ import sys
 
 from .output import outputters
 from .globbing_filter import GlobbingFilter
+from .grouper import Grouper
 
 
 class Config(object):
@@ -31,10 +32,13 @@ class Config(object):
             include=['*'],
         )
 
+        # Grouping
+        self.trace_grouper = Grouper()
+
         self.did_init = True
 
         # Update the defaults with anything from kwargs
-        [setattr(self, k, v) for k, v in kwargs.iteritems()]
+        [setattr(self, k, v) for k, v in kwargs.items()]
 
         self.create_parser()
 

@@ -1,17 +1,14 @@
 #!/usr/bin/env python
-'''
+"""
 This example demonstrates the use of filtering.
-'''
+"""
 import time
 
-from pycallgraph import PyCallGraph
-from pycallgraph import Config
-from pycallgraph import GlobbingFilter
+from pycallgraph import Config, GlobbingFilter, PyCallGraph
 from pycallgraph.output import GraphvizOutput
 
 
 class Banana:
-
     def __init__(self):
         pass
 
@@ -38,9 +35,9 @@ def run(name, trace_filter=None, config=None, comment=None):
         config.trace_filter = trace_filter
 
     graphviz = GraphvizOutput()
-    graphviz.output_file = 'filter-{}.png'.format(name)
+    graphviz.output_file = "filter-{}.png".format(name)
     if comment:
-        graphviz.graph_attributes['graph']['label'] = comment
+        graphviz.graph_attributes["graph"]["label"] = comment
 
     with PyCallGraph(config=config, output=graphviz):
         banana = Banana()
@@ -48,54 +45,47 @@ def run(name, trace_filter=None, config=None, comment=None):
 
 
 def filter_none():
-    run(
-        'none',
-        comment='Default filtering.'
-    )
+    run("none", comment="Default filtering.")
 
 
 def filter_exclude():
-    trace_filter = GlobbingFilter(exclude=[
-        'pycallgraph.*',
-        '*.secret_function',
-    ])
+    trace_filter = GlobbingFilter(
+        exclude=[
+            "pycallgraph.*",
+            "*.secret_function",
+        ]
+    )
 
     run(
-        'exclude',
+        "exclude",
         trace_filter=trace_filter,
-        comment='Should not include secret_function.',
+        comment="Should not include secret_function.",
     )
 
 
 def filter_include():
-    trace_filter = GlobbingFilter(include=[
-        '*.secret_function',
-        'Banana.eat',
-    ])
-
-    run(
-        'include',
-        trace_filter=trace_filter,
-        comment='Should show secret_function.'
+    trace_filter = GlobbingFilter(
+        include=[
+            "*.secret_function",
+            "Banana.eat",
+        ]
     )
+
+    run("include", trace_filter=trace_filter, comment="Should show secret_function.")
 
 
 def filter_depth():
     config = Config()
     config.max_depth = 1
 
-    run(
-        'max_depth',
-        config=config,
-        comment='Should only show a depth of one.'
-    )
+    run("max_depth", config=config, comment="Should only show a depth of one.")
 
 
 def filter_pycallgraph():
     trace_filter = GlobbingFilter(exclude=[])
 
     run(
-        'pycallgraph',
+        "pycallgraph",
         trace_filter=trace_filter,
         comment="Don't filter pycallgraph calls.",
     )
@@ -109,5 +99,5 @@ def main():
     filter_pycallgraph()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

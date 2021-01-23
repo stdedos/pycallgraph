@@ -1,0 +1,8 @@
+name: pycallgraph
+
+channels:
+  - conda-forge
+  - default
+
+dependencies:
+  - python=3.6

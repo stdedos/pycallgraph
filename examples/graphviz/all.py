@@ -1,12 +1,14 @@
 #!/usr/bin/env python
-'''
+"""
 Execute all pycallgraph examples in this directory.
-'''
-from glob import glob
+"""
+import subprocess
+from pathlib import Path
 
+current_path = Path(__file__).parent  # Get the directory of the current file
+all_py_files = list(current_path.glob("*.py"))
+examples = [ex for ex in all_py_files if ex.stem != "all"]
 
-examples = glob('*.py')
-examples.remove('all.py')
 for example in examples:
-    print(example)
-    execfile(example)
+    print(f"Running {example} ...")
+    subprocess.call(f"python {example}", shell=True)

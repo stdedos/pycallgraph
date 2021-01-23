@@ -6,7 +6,6 @@ class ColorException(Exception):
 
 
 class Color(object):
-
     def __init__(self, r, g, b, a=1):
         self.r = r
         self.g = g
@@ -20,18 +19,18 @@ class Color(object):
         return cls(r, g, b, a)
 
     def __str__(self):
-        return '<Color {}>'.format(self.rgba_web())
+        return f"<Color {self.rgba_web()}>"
 
     def validate_all(self):
-        self.validate('r')
-        self.validate('g')
-        self.validate('b')
-        self.validate('a')
+        self.validate("r")
+        self.validate("g")
+        self.validate("b")
+        self.validate("a")
 
     def validate(self, attr):
         v = getattr(self, attr)
         if not 0 <= v <= 1:
-            raise ColorException('{} out of range 0 to 1: {}'.format(attr, v))
+            raise ColorException(f"{attr} out of range 0 to 1: {v}")
 
     @property
     def r255(self):
@@ -50,13 +49,13 @@ class Color(object):
         return int(self.a * 255)
 
     def rgb_web(self):
-        '''Returns a string with the RGB components as a HTML hex string.'''
-        return '#{0.r255:02x}{0.g255:02x}{0.b255:02x}'.format(self)
+        """Returns a string with the RGB components as a HTML hex string."""
+        return "#{0.r255:02x}{0.g255:02x}{0.b255:02x}".format(self)
 
     def rgba_web(self):
-        '''Returns a string with the RGBA components as a HTML hex string.'''
-        return '{0}{1.a255:02x}'.format(self.rgb_web(), self)
+        """Returns a string with the RGBA components as a HTML hex string."""
+        return "{0}{1.a255:02x}".format(self.rgb_web(), self)
 
     def rgb_csv(self):
-        '''Returns a string with the RGB components as CSV.'''
-        return '{0.r255},{0.g255},{0.b255}'.format(self)
+        """Returns a string with the RGB components as CSV."""
+        return "{0.r255},{0.g255},{0.b255}".format(self)
