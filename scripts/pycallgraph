@@ -11,6 +11,10 @@ import os
 import pycallgraph as __pycallgraph
 
 
+if sys.argv[0] == "pycallgraph":
+    print("Nowadays called 'callgraph4py' :-)", file=sys.stderr)
+
+
 # Inject the current working directory so modules can be imported.
 sys.path.insert(0, os.getcwd())
 
@@ -18,7 +22,7 @@ __config = __pycallgraph.Config()
 __config.parse_args()
 __config.strip_argv()
 
-globals()['__file__'] = __config.command
+globals()["__file__"] = __config.command
 
 __file_content = open(__config.command).read()
 
