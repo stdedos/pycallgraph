@@ -30,12 +30,37 @@ Installation is easy as:
 
     pip install callgraph4py
 
-
 Python Call Graph
 -----------------
 Welcome! Python Call Graph is a [Python](http://www.python.org) module
 that creates [call graph](http://en.wikipedia.org/wiki/Call_graph)
 visualizations for Python applications.
+
+Quick Usage
+-----------
+
+You can either use the [command-line interface](https://pycallgraph.readthedocs.io/en/develop/guide/command_line_usage.html) for a quick visualization of your Python script, or the [pycallgraph module](https://pycallgraph.readthedocs.io/en/develop/api/pycallgraph.html) for more fine-grained settings.
+_NB: (links to [PyCallGraph](https://github.com/gak/pycallgraph)'s documentation)_
+
+The following examples specify graphviz as the outputter, so it's
+required to be installed. They will generate a file called
+**pycallgraph.png**.
+
+The command-line method of running pycallgraph is:
+
+```console
+$ pycallgraph graphviz -- ./mypythonscript.py
+```
+
+A simple use of the API is:
+
+```py
+from pycallgraph import PyCallGraph
+from pycallgraph.output import GraphvizOutput
+
+with PyCallGraph(output=GraphvizOutput()):
+    code_to_profile()
+```
 
 Screenshots
 -----------
